@@ -58,6 +58,12 @@
 		- [Tick *](#tick-)
 	- [08. Stores](#08-stores)
 		- [Writable stores](#writable-stores)
+		- [Auto-subscriptions *](#auto-subscriptions-)
+		- [Readable stores *](#readable-stores-)
+		- [Derived stores](#derived-stores)
+		- [Custom stores *](#custom-stores-)
+		- [Store bindings](#store-bindings)
+	- [09. Motion](#09-motion)
 
 ## 01. Introduction
 
@@ -707,5 +713,152 @@ async function handleKeydown(event) {
 
 ### Writable stores
 
+A store is a `subscribe` method which allows unrelated components to access
+a global variable via a function.
 
+We can access the variable using `.subscribe(value => /* something */)`.
 
+We can update the variable using `.update(prevValue => /* newValue */)`.
+
+We can set the variable using `.set(prevValue => /* newValue */)`.
+
+stores.js
+```js
+import { writable } from 'svelte/store';
+
+export const count = writable(0);
+```
+
+```svelte
+<script>
+	import { count } from './stores.js';
+
+	let count_value;
+
+	const unsubscribe = count.subscribe(value => {
+		count_value = value;
+	});
+</script>
+```
+
+```svelte
+<script>
+	import { count } from './stores.js';
+
+	function increment() {
+		count.update(n => n + 1);
+	}
+
+	function reset() {
+		count.set(0);
+	}
+</script>
+```
+
+We can also access the store value using `{$count}` subscribe shorthand.
+
+### Auto-subscriptions *
+
+The `unsubscribe` method needs to be called on destroy!!!
+
+```js
+onDestroy(unsubscribe);
+```
+
+But you can avoid this entirely by using the `$` syntax for subscription.
+
+```svelte
+<script>
+	import { count } from './stores.js';
+	import Incrementer from './Incrementer.svelte';
+	import Decrementer from './Decrementer.svelte';
+	import Resetter from './Resetter.svelte';
+</script>
+
+<h1>The count is {$count}</h1>
+```
+
+This removes the boilerplate for `count.subscribe(value => variable = value)`
+and `ondestroy(unsubscribe)`.
+
+### Readable stores *
+
+A readable store can only be read and manages itself.
+
+First subscriber arrives => activates the `start` function
+
+Last subsciber leaves => activates the `stop` function
+
+e.g. Clock subscription
+
+```js
+export const time = readable(new Date(), function start(set) {
+
+	const interval = setInterval(() => {
+		set(new Date());
+	}, 1000);
+
+	return function stop() {
+		clearInterval(interval);
+	};
+});
+```
+
+### Derived stores
+
+A store that can use a subscription to another store.
+
+```js
+// time is a readable store which is the current datetime
+
+const start = new Date();
+
+export const elapsed = derived(
+	time,
+	$time => Math.round(($time - start) / 1000)
+);
+```
+
+### Custom stores *
+
+An object is a store as long as it correctly implements `.subscribe`.
+
+```js
+import { writable } from 'svelte/store';
+
+function createCount() {
+	const { subscribe, set, update } = writable(0);
+
+	return {
+		subscribe,
+		increment: () => update(n => n + 1),
+		decrement: () => update(n => n - 1),
+		reset: () => set(0)
+	};
+}
+
+export const count = createCount();
+```
+
+We can add custom methods to our store and remove the update and set methods!
+
+A store needs to implement `set` and `update` to use shorthand such as
+`$name = 'Bob'` or `$name += '!'`.
+
+### Store bindings
+
+Stores can be bound.
+
+```js
+export const name = writable('world');
+
+export const greeting = derived(
+	name,
+	$name => `Hello ${$name}!`
+);
+```
+
+As stated above, store needs to implement `set` and `update` to use `$`
+assignment shorthand.
+
+## 09. Motion

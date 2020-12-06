@@ -64,6 +64,18 @@
 		- [Custom stores *](#custom-stores-)
 		- [Store bindings](#store-bindings)
 	- [09. Motion](#09-motion)
+		- [Tweened](#tweened)
+		- [Spring *](#spring-)
+	- [10. Transitions](#10-transitions)
+		- [The transition directive](#the-transition-directive)
+		- [Adding parameters](#adding-parameters)
+		- [In and out](#in-and-out)
+		- [Custom CSS transitions](#custom-css-transitions)
+		- [Custom JS transitions](#custom-js-transitions)
+		- [Transition events](#transition-events)
+		- [Local transitions](#local-transitions)
+		- [Defered transitions](#defered-transitions)
+	- [11. Animations](#11-animations)
 
 ## 01. Introduction
 
@@ -862,3 +874,246 @@ As stated above, store needs to implement `set` and `update` to use `$`
 assignment shorthand.
 
 ## 09. Motion
+
+### Tweened
+
+We can create a value that tweens between different points.
+
+It uses the obsevable/store pattern.
+
+```svelte
+<script>
+	import { tweened } from 'svelte/motion';
+	import { cubicOut } from 'svelte/easing';
+	const progress = tweened(0, { duration: 200, easing: cubicOut });
+</script>
+
+<button on:click="{() => progress.set(0)}">100%</button>
+<button on:click="{() => progress.set(0.25)}">25%</button>
+<button on:click="{() => progress.set(0.5)}">50%</button>
+<button on:click="{() => progress.set(0.75)}">75%</button>
+<button on:click="{() => progress.set(1)}">100%</button>
+
+<progress value={$progress}></progress>
+```
+
+### Spring *
+
+We can alternatively use spring, which works better for frequently changing
+values.
+
+```svelte
+<script>
+	import { spring } from 'svelte/motion';
+
+	let coords = spring({ x: 50, y: 50 }, {
+		stiffness: 0.1,
+		damping: 0.25
+	});
+	let size = spring(10);
+</script>
+```
+
+## 10. Transitions
+
+### The transition directive
+
+We can use `transition:fade` to make an element fade out if it dissapears.
+
+```svelte
+<script>
+	import { fade } from 'svelte/transition';
+	let visible = true;
+</script>
+
+<label>
+	<input type="checkbox" bind:checked={visible}>
+	visible
+</label>
+
+{#if visible}
+	<p transition:fade>Fades in and out</p>
+{/if}
+```
+
+### Adding parameters
+
+We can also add paremeters by using `={{ ...etc }}`
+
+```svelte
+<p transition:fly="{{ x: 200, duration: 500 }}">
+	Fades in and out
+</p>
+```
+
+### In and out
+
+We can use seperate transitions for in and out.
+
+```svelte
+<p in:fly="{{ y: 200, duration: 2000 }}" out:fade>
+	Flies in, fades out
+</p>
+```
+
+### Custom CSS transitions
+
+It is possible to create custom transitions.
+
+```svelte
+<script>
+	import { fade } from 'svelte/transition';
+	import { elasticOut } from 'svelte/easing';
+	let visible = true;
+
+	// Crazy rainbow spin transition
+
+	function spin(node, { duration }) {
+		return {
+			duration,
+			css: t => {
+				const eased = elasticOut(t);
+
+				return `
+					transform: scale(${eased}) rotate(${eased * 1080}deg);
+					color: hsl(
+						${~~(t * 360)},
+						${Math.min(100, 1000 - 1000 * t)}%,
+						${Math.min(50, 500 - 500 * t)}%
+					);`
+			}
+		};
+	}
+</script>
+```
+
+### Custom JS transitions
+
+It is possible to create custom JS transitions.
+
+```js
+// Typewriter transition
+
+function typewriter(node, { speed = 50 }) {
+	const valid = (
+		node.childNodes.length === 1 &&
+		node.childNodes[0].nodeType === Node.TEXT_NODE
+	);
+
+	if (!valid) {
+		throw new Error(`This transition only works on elements with a single text node child`);
+	}
+
+	const text = node.textContent;
+	const duration = text.length * speed;
+
+	return {
+		duration,
+		tick: t => {
+			const i = ~~(text.length * t);
+			node.textContent = text.slice(0, i);
+		}
+	};
+}
+```
+
+### Transition events
+
+If you need to trigger a function around an animation event.
+
+```svelte
+<p
+	transition:fly="{{ y: 200, duration: 2000 }}"
+	on:introstart="{() => status = 'intro started'}"
+	on:outrostart="{() => status = 'outro started'}"
+	on:introend="{() => status = 'intro ended'}"
+	on:outroend="{() => status = 'outro ended'}"
+>
+	Flies in and out
+</p>
+```
+
+### Local transitions
+
+The `|local` modifier only allows the transition to take place when the
+immediate parent block is added/removed.
+
+```svelte
+{#if showItems}
+	{#each items.slice(0, i) as item}
+		<div transition:slide|local>
+			{item}
+		</div>
+	{/each}
+{/if}
+```
+
+The `each` block will cause the transition to occur. The `if` will not.
+
+If we were to switch the order of the `if` and `each` statement, then the
+transition occur.
+
+### Defered transitions
+
+We can transition between to target locations using `crossFade`.
+
+crossFade returns a `send` and `recieve` variable which is used for in/out.
+
+```js
+import { crossfade } from 'svelte/transition';
+
+const [send, receive] = crossfade({
+	duration: d => Math.sqrt(d * 200),
+
+	fallback(node, params) {
+		const style = getComputedStyle(node);
+		const transform = style.transform === 'none' ? '' : style.transform;
+		return {
+			duration: 600,
+			easing: quintOut,
+			css: t => `
+				transform: ${transform} scale(${t});
+				opacity: ${t}
+			`
+		};
+	}
+});
+```
+
+```svelte
+<div class='left'>
+	<h2>todo</h2>
+	{#each todos.filter(t => !t.done) as todo (todo.id)}
+		<label
+			in:receive="{{key: todo.id}}"
+			out:send="{{key: todo.id}}"
+		>
+			<input type=checkbox on:change={() => mark(todo, true)}>
+			{todo.description}
+			<button on:click="{() => remove(todo)}">remove</button>
+		</label>
+	{/each}
+</div>
+
+<div class='right'>
+	<h2>done</h2>
+	{#each todos.filter(t => t.done) as todo (todo.id)}
+		<label
+			class="done"
+			in:receive="{{key: todo.id}}"
+			out:send="{{key: todo.id}}"
+		>
+			<input type=checkbox checked on:change={() => mark(todo, false)}>
+			{todo.description}
+			<button on:click="{() => remove(todo)}">remove</button>
+		</label>
+	{/each}
+</div>
+```
+
+When we move a todo from the left and add it to the right, then it will do a
+movement transition. If the key does not exist in the `send` location, the
+fallback transition is used.
+
+## 11. Animations
+

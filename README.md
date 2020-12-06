@@ -6,36 +6,58 @@
 
 [Quickstart](https://svelte.dev/blog/the-easiest-way-to-get-started)
 
+[Examples](https://svelte.dev/examples)
+
 ## Contents
 
 - [svelte-practice](#svelte-practice)
-  - [Contents](#contents)
-  - [01. Introduction](#01-introduction)
-    - [Adding data](#adding-data)
-    - [Dynamic Attributes](#dynamic-attributes)
-    - [Nested components](#nested-components)
-    - [HTML tags](#html-tags)
-  - [02. Reactivity](#02-reactivity)
-    - [Assignments](#assignments)
-    - [Reactive Declarations](#reactive-declarations)
-    - [Reactive Statements](#reactive-statements)
-    - [Updating arrays and objects](#updating-arrays-and-objects)
-  - [03. Props](#03-props)
-    - [Declaring props](#declaring-props)
-    - [Prop default values](#prop-default-values)
-    - [Spread props](#spread-props)
-  - [04. Logic](#04-logic)
-    - [If blocks](#if-blocks)
-    - [Else blocks](#else-blocks)
-    - [Each blocks](#each-blocks)
-    - [Await blocks](#await-blocks)
-  - [05. Events](#05-events)
-    - [Mousemove](#mousemove)
-    - [Event modifiers](#event-modifiers)
-    - [Component events](#component-events)
-    - [Event forwarding](#event-forwarding)
-    - [DOM event forwarding](#dom-event-forwarding)
-  - [06. Bindings](#06-bindings)
+	- [Contents](#contents)
+	- [01. Introduction](#01-introduction)
+		- [Adding data](#adding-data)
+		- [Dynamic Attributes](#dynamic-attributes)
+		- [Nested components](#nested-components)
+		- [HTML tags](#html-tags)
+	- [02. Reactivity](#02-reactivity)
+		- [Assignments](#assignments)
+		- [Reactive Declarations](#reactive-declarations)
+		- [Reactive Statements](#reactive-statements)
+		- [Updating arrays and objects](#updating-arrays-and-objects)
+	- [03. Props](#03-props)
+		- [Declaring props](#declaring-props)
+		- [Prop default values](#prop-default-values)
+		- [Spread props](#spread-props)
+	- [04. Logic](#04-logic)
+		- [If blocks](#if-blocks)
+		- [Else blocks](#else-blocks)
+		- [Each blocks](#each-blocks)
+		- [Await blocks](#await-blocks)
+	- [05. Events](#05-events)
+		- [Mousemove](#mousemove)
+		- [Event modifiers](#event-modifiers)
+		- [Component events](#component-events)
+		- [Event forwarding](#event-forwarding)
+		- [DOM event forwarding](#dom-event-forwarding)
+	- [06. Bindings](#06-bindings)
+		- [Text Bindings](#text-bindings)
+		- [Numeric Inputs](#numeric-inputs)
+		- [Checkbox inputs](#checkbox-inputs)
+		- [Group inputs (checkbox & radio) *](#group-inputs-checkbox--radio-)
+		- [TextArea inputs](#textarea-inputs)
+		- [Select bindings (dropdown)](#select-bindings-dropdown)
+		- [Select Multiple *](#select-multiple-)
+		- [Contenteditable bindings](#contenteditable-bindings)
+		- [Each block bindings *](#each-block-bindings-)
+		- [Media element bindings](#media-element-bindings)
+		- [Dimensions](#dimensions)
+		- [This](#this)
+		- [Component bindings](#component-bindings)
+	- [07. Lifecycle](#07-lifecycle)
+		- [onMount](#onmount)
+		- [onDestroy *](#ondestroy-)
+		- [beforeUpdate and afterUpdate](#beforeupdate-and-afterupdate)
+		- [Tick *](#tick-)
+	- [08. Stores](#08-stores)
+		- [Writable stores](#writable-stores)
 
 ## 01. Introduction
 
@@ -377,7 +399,7 @@ Bottom:
 We can also forward normal DOM events.
 
 Parent:
-```
+```svelte
 <CustomButton on:click={handleClick}/>
 ```
 
@@ -389,3 +411,301 @@ CustomButton:
 ```
 
 ## 06. Bindings
+
+### Text Bindings
+
+```svelte
+<input bind:value={name}>
+```
+
+### Numeric Inputs
+
+```svelte
+<script>
+	let a = 1;
+	let b = 2;
+</script>
+
+<label>
+	<input type=number bind:value={a} min=0 max=10>
+	<input type=range bind:value={a} min=0 max=10>
+</label>
+
+<label>
+	<input type=number bind:value={b} min=0 max=10>
+	<input type=range bind:value={b} min=0 max=10>
+</label>
+
+<p>{a} + {b} = {a + b}</p>
+```
+
+The number input and slider input are bound to the variable.
+
+### Checkbox inputs
+
+```svelte
+<input type=checkbox bind:checked={yes}>
+```
+
+### Group inputs (checkbox & radio) *
+
+Radio buttons: the group denotes which one is selected.
+
+```svelte
+<script>let scoops = 1;</script>
+<input type=radio bind:group={scoops} value={1}>
+<input type=radio bind:group={scoops} value={2}>
+<input type=radio bind:group={scoops} value={3}>
+```
+
+Checkbox buttons: the group denotes an array of selected values.
+
+```svelte
+<script>let flavours = ['Mint choc chip'];</script>
+<input type=checkbox bind:group={flavours} value="Cookies and cream">
+<input type=checkbox bind:group={flavours} value="Mint choc chip">
+<input type=checkbox bind:group={flavours} value="Raspberry ripple">
+```
+
+### TextArea inputs
+
+```svelte
+<script>
+	import marked from 'marked';
+	let value = `Some words are *italic*, some are **bold**`;
+</script>
+
+<style>
+	textarea { width: 100%; height: 200px; }
+</style>
+
+<textarea bind:value={value}></textarea>
+{@html marked(value)}
+```
+
+### Select bindings (dropdown)
+
+Binds the personal question from the select dropdown to selected, and resets
+the text input.
+
+```svelte
+<select bind:value={selected} on:change="{() => answer = ''}">
+	{#each questions as question}
+		<option value={question}>
+			{question.text}
+		</option>
+	{/each}
+</select>
+```
+
+### Select Multiple *
+
+We can use select multiple to select multiple options using ctrl or shift click
+(like a file explorer!!!)
+
+```svelte
+<select multiple bind:value={flavours}>
+	{#each menu as flavour}
+		<option value={flavour}>
+			{flavour}
+		</option>
+	{/each}
+</select>
+```
+
+### Contenteditable bindings
+
+The `contenteditable` tag supports binding textContent and innerHTML.
+
+```svelte
+<div  contenteditable="true" bind:textContent={html}></div>
+<div  contenteditable="true" bind:innerHTML={html}></div>
+```
+
+### Each block bindings *
+
+Bindings work on objects iterated through an each block.
+
+```svelte
+{#each todos as todo}
+	<div class:done={todo.done}>
+		<input
+			type=checkbox
+			bind:checked={todo.done}
+		>
+
+		<input
+			placeholder="What needs to be done?"
+			bind:value={todo.text}
+		>
+	</div>
+{/each}
+```
+
+
+### Media element bindings
+
+```svelte
+<video
+	poster="https://sveltejs.github.io/assets/caminandes-llamigos.jpg"
+	src="https://sveltejs.github.io/assets/caminandes-llamigos.mp4"
+	on:mousemove={handleMousemove}
+	on:mousedown={handleMousedown}
+	bind:currentTime={time}
+	bind:duration
+	bind:paused
+>
+```
+Bindings for `<audio>` and `<video>`:
+* duration (readonly) — the total duration of the video, in seconds
+* buffered (readonly) — an array of {start, end} objects
+* seekable (readonly) — ditto
+* played (readonly) — ditto
+* seeking (readonly) — boolean
+* ended (readonly) — boolean
+* currentTime — the current point in the video, in seconds
+* playbackRate — how fast to play the video, where 1 is 'normal'
+* paused — this one should be self-explanatory
+* volume — a value between 0 and 1
+* muted — a boolean value where true is muted
+
+### Dimensions
+
+Block level elements have attributes:
+* clientWidth
+* clientHeight
+* offsetWidth
+* offsetHeight
+
+```svelte
+<div bind:clientWidth={w} bind:clientHeight={h}>
+	<span style="font-size: {size}px">{text}</span>
+</div>
+```
+
+### This
+
+Allows you to bind the element itself to a variable for use in code.
+
+```svelte
+<canvas
+	bind:this={canvas}
+	width={32}
+	height={32}
+></canvas>
+```
+
+### Component bindings
+
+We can bind a prop in a custom component to a variable.
+
+```svelte
+<Keypad bind:value={pin} on:submit={handleSubmit}/>
+```
+
+## 07. Lifecycle
+
+### onMount
+
+```svelte
+<script>
+	import {onMount} from 'svelte';
+	let photos = [];
+
+	onMount(async () => {
+		const res = await fetch(`https://jsonplaceholder.typicode.com/photos?_limit=20`);
+		photos = await res.json();
+	})
+</script>
+```
+
+The returned function is runned when the component is destroyed.
+
+### onDestroy *
+
+We can call the onDestroy method from the component just like onMount.
+
+We can also use onDestroy in helper methods in order to perform cleanup.
+
+utils.js
+```js
+import { onDestroy } from 'svelte';
+
+export function onInterval(callback, milliseconds) {
+
+	// Calls a function every number of seconds
+	const interval = setInterval(callback, milliseconds);
+
+	// Clears the interval when the component is destroyed
+	onDestroy(() => {
+		clearInterval(interval);
+	});
+}
+```
+
+### beforeUpdate and afterUpdate
+
+beforeUpdate: before the DOM updates
+
+afterUpdate: after the DOM updates
+
+Used to run code once the DOM is in sync with data.
+
+We can use it to perform autoscrolling properly.
+
+```js
+let autoscroll;
+let div;
+
+beforeUpdate(() => {
+		autoscroll = div && (div.offsetHeight + div.scrollTop) > (div.scrollHeight - 20);
+});
+
+afterUpdate(() => {
+		if (autoscroll) div.scrollTo(0, div.scrollHeight);
+});
+```
+
+### Tick *
+
+Is a promise function which resolves when pending state changes have been
+applied to the DOM.
+
+It is useful when we want to ensure that selections range in textarea is
+maintained.
+
+```js
+let text = `Select some text and hit the tab key to toggle uppercase`;
+import { tick } from 'svelte';
+
+async function handleKeydown(event) {
+	if (event.key !== 'Tab') return;
+
+	event.preventDefault();
+
+	const { selectionStart, selectionEnd, value } = this;
+	const selection = value.slice(selectionStart, selectionEnd);
+
+	const replacement = /[a-z]/.test(selection)
+		? selection.toUpperCase()
+		: selection.toLowerCase();
+
+	text = (
+		value.slice(0, selectionStart) +
+		replacement +
+		value.slice(selectionEnd)
+	);
+
+	// Need to wait for the tick so that we can (re)select our highlighted text.
+	await tick();
+	this.selectionStart = selectionStart;
+	this.selectionEnd = selectionEnd;
+}
+```
+
+## 08. Stores
+
+### Writable stores
+
+
+

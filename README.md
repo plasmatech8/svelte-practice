@@ -40,3 +40,18 @@ soon.
 
 `src/routes` folder contains routes.
 
+
+!!!
+
+Can't get it to run dev server.
+
+```
+🔥🔥🔥 svelte-practice$ npm run dev -- --open
+
+> svelte-practice@0.0.1 dev /home/mark/Code/practice/svelte-practice
+> svelte-kit dev "--open"
+
+(node:17639) UnhandledPromiseRejectionWarning: /home/mark/Code/practice/svelte-practice/node_modules/@sveltejs/kit/dist/index4.js:262
+        #map
+        ^
+```

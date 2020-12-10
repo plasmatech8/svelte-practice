@@ -81,4 +81,42 @@ If is no existing component (i.e. `my-post.svelte`), then it will run the
 
 ## 04. Custom layout & Nav
 
-https://www.youtube.com/watch?v=zK2_FI8jcAA&list=PL4cUxeGkcC9gdr4Qhx83gBBcID-KMe-PQ&index=4
+`_layout.svelte`
+
+A layout will put the contents of the component inside. If the parent route
+also has a layout, there will be a layout inside of a layout.
+
+We will create a `Footer.svelte` and add it to the layout.
+
+We will update the `Nav.svelte` links. Add a contact and jobs page. Remove blog.
+
+The `aria-current` is used to add a class name to the components in a route.
+We can ignore this for now.
+
+**The segment prop**
+
+The `segment` variable is provided to our layout component. It is passed into
+our Nav component as a prop.
+
+Segment = tells us the page we are currently viewing.
+
+* `undefined` = `index.svelte`
+* `undefined` = `_error.svelte`
+* `about` = `about.svelte`
+* `jobs` = `jobs/index.svelte`
+* `jobs` = `jobs/create.svelte`
+
+We can use this to style the pages differently.
+
+We will use segment to add a class on the nav links.
+
+```svelte
+    <li><a class:current={segment === undefined} href=".">home</a></li>
+    <li><a class:current={segment === 'contact'} href="contact">contact</a></li>
+    <li><a class:current={segment === 'about'} href="about">about</a></li>
+    <li><a class:current={segment === 'jobs'} href="jobs">jobs</a></li>
+```
+
+## 05. Server code vs Client code
+
+https://www.youtube.com/watch?v=UpoMwWfi5ko&list=PL4cUxeGkcC9gdr4Qhx83gBBcID-KMe-PQ&index=5

@@ -1,5 +1,30 @@
 # svelte-practice
 
+## 01. Setup
+
+```
+npx degit "sveltejs/sapper-template#rollup" job-ninja
+cd job-ninja
+npm install
+```
+
+Dev server: `npm run dev`
+
+SSR:
+* Build: `npm run build`
+* Run: `node __sapper__/build`
+
+SPA:
+* Build: `npm run export`
+* Run: `npx serve __sapper__/export `
+
+If we have static content like images in the static folder, we can access them
+easily using `src="my-static-file.png"`
+
+## 02. Routes
+
+https://www.youtube.com/watch?v=jQGmvrHeYC4
+
 ## Notes
 
 Routing options:

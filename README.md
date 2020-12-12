@@ -119,4 +119,17 @@ We will use segment to add a class on the nav links.
 
 ## 05. Server code vs Client code
 
-https://www.youtube.com/watch?v=UpoMwWfi5ko&list=PL4cUxeGkcC9gdr4Qhx83gBBcID-KMe-PQ&index=5
+The code in the `<script>` tag can potentially run in both the browser and the
+server.
+
+The first request runs in the server, then subsequent requests in the browser.
+
+If we do a `console.log('my page')`, then the console log is printed in the
+server console for the **first request**. When we change the page, the console
+log is only printed to the browser console.
+
+`onMount` will only ever run in the browser. It is tied to the component.
+
+`fetch` is not defined in a server, so we should only use it on mount.
+
+## 06.

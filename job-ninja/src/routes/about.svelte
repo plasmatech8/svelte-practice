@@ -1,3 +1,7 @@
+<script>
+	console.log('about')
+</script>
+
 <svelte:head>
 	<title>About</title>
 </svelte:head>

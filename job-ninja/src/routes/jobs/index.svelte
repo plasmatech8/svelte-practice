@@ -1,3 +1,7 @@
+<script>
+	console.log('jobs')
+</script>
+
 <svelte:head>
 	<title>Jobs</title>
 </svelte:head>

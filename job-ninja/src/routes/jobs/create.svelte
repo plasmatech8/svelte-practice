@@ -1,3 +1,7 @@
+<script>
+	console.log('jobs create')
+</script>
+
 <svelte:head>
 	<title>Create Job</title>
 </svelte:head>

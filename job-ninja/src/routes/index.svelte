@@ -1,3 +1,7 @@
+<script>
+	console.log('home')
+</script>
+
 <style>
 	h1, p {
 		text-align: center;

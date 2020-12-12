@@ -1,5 +1,16 @@
+<script context="module">
+	export async function preload(page, session){
+		const result = await this.fetch('/data.json')
+		const todos = await result.json()
+		console.log("only on the server!")
+		return { todos }
+	}
+</script>
+
 <script>
-	console.log('jobs')
+	export let todos;
+	console.log(todos)
+	console.log('jobs page')
 </script>
 
 <svelte:head>

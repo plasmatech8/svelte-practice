@@ -119,17 +119,69 @@ We will use segment to add a class on the nav links.
 
 ## 05. Server code vs Client code
 
-The code in the `<script>` tag can potentially run in both the browser and the
-server.
+The code in the `<script>` tag can run in both the browser and the server.
 
-The first request runs in the server, then subsequent requests in the browser.
+The first request runs in the server and browser, then subsequent requests are
+only in the browser.
 
-If we do a `console.log('my page')`, then the console log is printed in the
-server console for the **first request**. When we change the page, the console
-log is only printed to the browser console.
+If we do `console.log('my page')`, it will be printed in the server console
+for the first request.
+
+When we change the page, it is only printed to the browser console.
+
+```svelte
+<script>
+	console.log('jobs')
+</script>
+```
 
 `onMount` will only ever run in the browser. It is tied to the component.
 
 `fetch` is not defined in a server, so we should only use it on mount.
 
-## 06.
+## 06. Preloading Data (server or client)
+
+A script tag with `context="module"` is not part of the component and always
+runs before the other scripts.
+
+We can perform a `fetch` on the server (as well as the browser) using a preload
+function.
+
+```svelte
+<script context="module">
+	export async function preload(page, session){
+		const result = await this.fetch('/data.json')
+		const todos = await result.json()
+		console.log("jobs page pre-load data")
+		return { todos }
+	}
+</script>
+
+<script>
+	export let todos; // Todos data from server
+	console.log(todos)
+	console.log('jobs page')
+</script>
+```
+
+It will either fetch from the browser or server, but not both. (Unlike the
+regular script tag, which runs on both).
+
+We can also go to the `Nav.svelte` and add this preload function to the button:
+
+```svelte
+			<li><a rel=prefetch class:current={segment === 'jobs'} href="jobs">
+        jobs
+        </a></li>
+```
+
+`rel=prefetch` causes the prefetch function to run when you hover over the
+link! This makes it even faster when you want go to a new page without waiting
+for data.
+
+![](docs/2020-12-12-16-10-51.png)
+
+Essentially this allows us to get data faster by (1) getting it from the
+server, or (2) loading it when the user hovers the mouse over the button.
+
+## 07 Server Routes

@@ -241,3 +241,64 @@ And we will use this data in `jobs/index.svelte`:
 </ul>
 ```
 
+## 08. Adding a Web Form
+
+We will add a form that can be used to add new data to the server.
+
+```svelte
+<script>
+import { prevent_default } from "svelte/internal";
+
+	console.log('jobs create')
+
+	let title;
+	let salary;
+	let details;
+	const handleSubmit = () => {
+		console.log(title)
+		console.log(salary)
+		console.log(details)
+	}
+</script>
+<!-- ... -->
+<h2>Add a New job</h2>
+
+<form on:submit|preventDefault={handleSubmit}>
+	<input type="text" placeholder="job title" required bind:value={title}>
+	<input type="number" placeholder="salary" required bind:value={salary}>
+	<textarea placeholder="job details" required bind:value={details}></textarea>
+	<button class="btn">Add new job</button>
+</form>
+```
+
+## 09. POST Requests to the server
+
+We will add the body-parser middleware to our `server.js` and create a
+`post` function in `jobs/index.json.js`.
+
+In `jobs/index.json.js`:
+```js
+export function post(req, res, next) {
+  const { title, salary, details } = req.body;
+  const id = uuidv4();
+  jobs.push({ id, title, salary, details })
+  res.end(JSON.stringify(jobs))
+}
+```
+
+In `jobs/create.svelte`:
+```js
+const handleSubmit = async () => {
+		console.log(title, salary, details)
+		if (title && salary && details){
+			const res = await fetch('/jobs.json', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({ title, salary, details })
+			});
+			const updatedJobs = await res.json();
+      console.log(updatedJobs)
+			goto('/jobs')
+		}
+  }
+```

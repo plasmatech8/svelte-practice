@@ -185,3 +185,59 @@ Essentially this allows us to get data faster by (1) getting it from the
 server, or (2) loading it when the user hovers the mouse over the button.
 
 ## 07 Server Routes
+
+Instead of using data in the static folder, we will retrieve it from the
+Sapper server.
+
+We can make server requests using a JavaScript file alongside our components.
+* `/jobs/index.json.js` for the server route request (for `/jobs`)
+* `/jobs/index.svelte` for getting the page/component
+* `mysite.com/jobs/[id]`
+
+We call the file `index.json.js` to avoid name conflicts.
+
+We can call this fetch from the preload function:
+`const result = await this.fetch('/jobs.json')`
+
+In `jobs/index.json.js` we will define our get request:
+```js
+import { jobs } from './_data.js';
+
+export function get(req, res, next) {
+  // Query the database (or just query a file on the server...)
+  res.end(JSON.stringify(jobs))
+}
+```
+
+In `jobs/_data.js` we will store some data:
+```js
+import { LoremIpsum } from 'lorem-ipsum';
+
+const lorem = new LoremIpsum();
+
+export let jobs = [
+  {
+    id: '1', title: "Mario's plumbing assistant", salary: 20000,
+    details: lorem.generateSentences(3)
+  },
+  {
+    id: '2', title: "Apple picker for Yoshi", salary: 22000,
+    details: lorem.generateSentences(3)
+  },
+  {
+    id: '3', title: "Mariokart driver", salary: 30000,
+    details: lorem.generateSentences(3)
+  },
+]
+```
+
+And we will use this data in `jobs/index.svelte`:
+```svelte
+<h2>All Current Jobs</h2>
+<ul>
+	{#each jobs as job }
+		<li><a href="/">{job.title}</a></li>
+	{/each}
+</ul>
+```
+

@@ -1,15 +1,15 @@
 <script context="module">
 	export async function preload(page, session){
-		const result = await this.fetch('/data.json')
-		const todos = await result.json()
+		const result = await this.fetch('/jobs.json')
+		const jobs = await result.json()
 		console.log("only on the server!")
-		return { todos }
+		return { jobs }
 	}
 </script>
 
 <script>
-	export let todos;
-	console.log(todos)
+	export let jobs;
+	console.log(jobs)
 	console.log('jobs page')
 </script>
 
@@ -18,11 +18,8 @@
 </svelte:head>
 
 <h2>All Current Jobs</h2>
-
-<p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Aliquid,
-	consectetur ab fugit voluptatem dolore non expedita assumenda repudiandae
-	cum excepturi!</p>
-
-<p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Aliquid,
-	consectetur ab fugit voluptatem dolore non expedita assumenda repudiandae
-	cum excepturi!</p>
+<ul>
+	{#each jobs as job }
+		<li><a href="/">{job.title}</a></li>
+	{/each}
+</ul>

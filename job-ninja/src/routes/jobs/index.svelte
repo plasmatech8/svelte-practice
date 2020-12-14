@@ -8,9 +8,17 @@
 </script>
 
 <script>
-	export let jobs;
-	console.log(jobs)
-	console.log('jobs page')
+  export let jobs = [];
+
+  console.log('jobs page');
+  /*
+  // If we want to make sure that the page data reloaded on the client when
+  // going back.
+  import { onMount } from "svelte";
+  onMount(async () => {
+    jobs = await (await fetch('/jobs.json')).json()
+  });
+  */
 </script>
 
 <style>
@@ -43,7 +51,7 @@
 <h2>All Current Jobs</h2>
 <ul>
 	{#each jobs as job }
-		<li><a href={`jobs/${job.id}`}>{job.title}</a></li>
+		<li><a href={`jobs/${job.id}`} rel=prefetch>{job.title}</a></li>
 	{/each}
 </ul>
 

@@ -24,4 +24,8 @@
 
 </style>
 
-<h2>{job.title}</h2>
+<div class="job">
+  <h2>{job.title}</h2>
+  <p>Salary of ${ job.salary }</p>
+  <p>{ job.details }</p>
+</div>

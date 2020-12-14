@@ -344,3 +344,47 @@ export function get(req, res, next) {
 Remember to use `this.fetch('url');` in the preload function, because fetch
 is not available in a Node server - when we do the first-load on the page.
 
+## 11. Job Details Page
+
+We will create the page for job details.
+
+We will also make it so that the job data is preloaded (+ on hover of the link).
+
+`src/routes/jobs/[id].svelte`:
+```svelte
+<div class="job">
+  <h2>{job.title}</h2>
+  <p>Salary of ${ job.salary }</p>
+  <p>{ job.details }</p>
+</div>
+```
+
+`src/components/jobs/index.svelte`:
+```svelte
+<ul>
+	{#each jobs as job }
+		<li><a href={`jobs/${job.id}`} rel=prefetch>{job.title}</a></li>
+	{/each}
+</ul>
+```
+
+`static/global.css`:
+```css
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap');
+/* ... */
+/* extra styles */
+.btn {
+  display: inline-block;
+  background: #ff3e00;
+  color: white;
+  padding: 10px 15px;
+  text-decoration: none;
+  border-radius: 8px;
+  text-transform: uppercase;
+  font-size: 11px;
+  letter-spacing: 1px;
+  font-weight: 600;
+  border: 0;
+  font-family: Quicksand;
+}
+```

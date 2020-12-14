@@ -388,3 +388,35 @@ We will also make it so that the job data is preloaded (+ on hover of the link).
   font-family: Quicksand;
 }
 ```
+
+## 12. Error Messages
+
+We want the server to return a 404 error if the `jobs/[id]` page does not
+exist.
+
+We will check that the page exists in the server and check the status code in
+the browser.
+
+`jobs/[id].json.js`:
+```js
+if (job) {
+  res.setHeader('Content-Type', 'application/json')
+  res.end(JSON.stringify(job));
+} else {
+  res.statusCode = 404;
+  res.end(JSON.stringify({ error: 'That job does not exist' }));
+}
+```
+
+`jobs/[id].svelte`:
+```js
+    if (res.status === 202) {
+      const job = await res.json();
+      return { job }
+    }
+
+    if (res.status === 404){
+      const { error } = await res.json();
+      this.error(404, error); // error code, error message
+    }
+```

@@ -43,7 +43,7 @@
 <h2>All Current Jobs</h2>
 <ul>
 	{#each jobs as job }
-		<li><a href="/">{job.title}</a></li>
+		<li><a href={`jobs/${job.id}`}>{job.title}</a></li>
 	{/each}
 </ul>
 

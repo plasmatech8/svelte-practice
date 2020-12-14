@@ -302,3 +302,45 @@ const handleSubmit = async () => {
 		}
   }
 ```
+
+## 10. Route Parameters
+
+How to get route parameters (slug) from url.
+
+We will grab the ID from the route parameters in `jobs/[id].svelte`:
+```svelte
+<script context="module">
+  console.log('jobs [id]');
+
+	export async function preload(page, session){
+    const { id } = page.params;
+
+    const res = await this.fetch(`jobs/${id}.json`);
+    const job = await res.json();
+
+    return { job }
+	}
+</script>
+
+<script>
+  export let job;
+  console.log(job)
+</script>
+```
+
+And create a GET request on the server in `jobs.[id].json.js`
+```js
+import { jobs } from './_data.js';
+
+export function get(req, res, next) {
+  const { id } = req.params;
+  const job = jobs.find(j => j.id === id);
+
+  res.setHeader('Content-Type', 'application/json')
+  res.end(JSON.stringify(job));
+}
+```
+
+Remember to use `this.fetch('url');` in the preload function, because fetch
+is not available in a Node server - when we do the first-load on the page.
+

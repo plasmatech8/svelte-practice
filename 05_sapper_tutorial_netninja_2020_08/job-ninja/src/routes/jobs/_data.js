@@ -1,0 +1,18 @@
+import { LoremIpsum } from 'lorem-ipsum';
+
+const lorem = new LoremIpsum();
+
+export let jobs = [
+  {
+    id: '1', title: "Mario's plumbing assistant", salary: 20000,
+    details: lorem.generateSentences(3)
+  },
+  {
+    id: '2', title: "Apple picker for Yoshi", salary: 22000,
+    details: lorem.generateSentences(3)
+  },
+  {
+    id: '3', title: "Mariokart driver", salary: 30000,
+    details: lorem.generateSentences(3)
+  },
+]

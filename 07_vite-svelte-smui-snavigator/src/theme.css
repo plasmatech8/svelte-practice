@@ -38,3 +38,6 @@
   --mdc-layout-grid-gutter-phone: 16px;
   --mdc-layout-grid-column-width-phone: 72px;
 }
+body {
+  background-color: lightgray;
+}

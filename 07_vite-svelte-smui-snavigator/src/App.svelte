@@ -4,6 +4,8 @@
 
   import logo from "./assets/svelte.png";
   import Counter from "./lib/Counter.svelte";
+  import TopBar from "./lib/TopBar.svelte";
+
 </script>
 
   <Router primary={false} >
@@ -17,6 +19,7 @@
         <Link to="/about">About</Link>
         <Link to="/login">Login</Link>
       </nav>
+      <TopBar></TopBar>
     </header>
 
     <main class="mdc-typography--body1">
@@ -55,6 +58,10 @@
           <strong>strong</strong>
           <em>em</em>
         </div>
+      </Route>
+
+      <Route>
+        <h1>404: Not Found</h1>
       </Route>
     </main>
   </Router>

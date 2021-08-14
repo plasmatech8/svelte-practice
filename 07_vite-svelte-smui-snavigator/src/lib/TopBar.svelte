@@ -11,7 +11,7 @@
     { name: "About", to: "/about" },
     { name: "Login", to: "/login" },
   ];
-  $: active = tabs.find((t) => t.to === $location.pathname);
+  let active = tabs.find((t) => t.to === $location.pathname);
   console.log(active);
 </script>
 

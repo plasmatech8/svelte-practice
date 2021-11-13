@@ -1,3 +1,7 @@
+<script>
+	import Nav from '../components/Nav.svelte';
+</script>
+
 <svelte:head>
 	<title>Home</title>
 </svelte:head>
@@ -7,7 +11,3 @@
 <div>
 	<div>asds</div>
 </div>
-<h2>Links:</h2>
-<ul>
-	<li><a href="/about">about page</a></li>
-</ul>

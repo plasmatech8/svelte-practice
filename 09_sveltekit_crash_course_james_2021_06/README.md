@@ -4,6 +4,7 @@ See [SvelteKit Crash Course](https://www.youtube.com/watch?v=UU7MgYIbtAk).
 
 - [SvelteKit Crash Course](#sveltekit-crash-course)
   - [01. Init Project](#01-init-project)
+  - [02. Pages](#02-pages)
 
 ## 01. Init Project
 
@@ -21,3 +22,9 @@ npm install --save-dev eslint-plugin-html
 ```
 
 Make sure format on save is configured.
+
+## 02. Pages
+
+SvelteKit uses path based routing, and each .svelte file is a page.
+
+Use `<svelte:head>` tag to add header information (i.e. titles, meta)

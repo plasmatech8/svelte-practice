@@ -1,6 +1,7 @@
-<script>
+<script lang="ts">
 	import { onMount } from 'svelte';
 	import { pokemon } from '../stores/pokestore';
+	import PokemonCard from '../components/PokemonCard.svelte';
 
 	onMount(() => {
 		console.log($pokemon);
@@ -12,10 +13,9 @@
 </svelte:head>
 
 <h1 class="text-4xl text-center my-8 uppercase">Welcome to SvelteKit Pokedex!</h1>
-<p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
 
-<h2>Look at these Pokemon!</h2>
-
-{#each $pokemon as p}
-	<p>{p.name}</p>
-{/each}
+<div class="py-4 grid gap-4 md:grid-cols-2 grid-cols-1">
+	{#each $pokemon as pokeman}
+		<PokemonCard {pokeman} />
+	{/each}
+</div>

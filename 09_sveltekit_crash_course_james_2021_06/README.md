@@ -10,6 +10,7 @@ See:
   - [03. Routing and Layouts](#03-routing-and-layouts)
   - [04. Stores](#04-stores)
   - [05. Adding TailwindCSS](#05-adding-tailwindcss)
+  - [06. Creating a Pokeman Card Component](#06-creating-a-pokeman-card-component)
 
 ## 01. Init Project
 
@@ -70,6 +71,7 @@ This will:
 
 You might also want to:
 * install the tailwind intellisense VSCode extension.
+* install Past JSON as Code
 * turn on quick suggestions so that suggestions are instant when using Svelte.
 ```json
 "editor.quickSuggestions": {
@@ -77,3 +79,8 @@ You might also want to:
 }
 ```
 
+## 06. Creating a Pokeman Card Component
+
+We will use tailwind to create a card.
+
+We will use CSS grid (tailwind) to format the cards into a grid.

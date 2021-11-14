@@ -11,7 +11,7 @@
 	<title>Home</title>
 </svelte:head>
 
-<h1>Welcome to SvelteKit Pokedex!</h1>
+<h1 class="text-4xl text-center my-8 uppercase">Welcome to SvelteKit Pokedex!</h1>
 <p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
 
 <h2>Look at these Pokemon!</h2>

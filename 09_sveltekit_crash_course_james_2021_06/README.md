@@ -63,15 +63,14 @@ I think I will use the svelte adder.
 npx svelte-add@latest tailwindcss
 npm install
 ```
-This will create a `postcss.config.cjs` and `tailwind.config.cjs`.
+This will:
+* create a `postcss.config.cjs` and `tailwind.config.cjs`.
+* modify your `svelte.config.js` and `__layout.svelte`.
+* change the fonts and styling/fonts of your app to tailwind.
 
-It will modify your `svelte.config.js` and `__layout.svelte`.
-
-It will change the fonts and styling of your app.
-
-You might also want to install the tailwind intellisense VSCode extension.
-
-You might want to turn on quick suggestions so that suggestions are instant when using Svelte.
+You might also want to:
+* install the tailwind intellisense VSCode extension.
+* turn on quick suggestions so that suggestions are instant when using Svelte.
 ```json
 "editor.quickSuggestions": {
     "strings": true

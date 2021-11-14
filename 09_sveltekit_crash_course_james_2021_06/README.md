@@ -8,6 +8,7 @@ See:
   - [01. Init Project](#01-init-project)
   - [02. Pages](#02-pages)
   - [03. Routing and Layouts](#03-routing-and-layouts)
+  - [04. Stores](#04-stores)
 
 ## 01. Init Project
 
@@ -26,6 +27,8 @@ npm install --save-dev eslint-plugin-html
 
 Make sure format on save is configured.
 
+Make sure prettier is set as the default formatter + format on save.
+
 ## 02. Pages
 
 SvelteKit uses path based routing, and each .svelte file is a page.
@@ -42,3 +45,8 @@ A 404 route can be done by creating a `__errors.svelte` file.
 
 A layout can be created using a `__layout.svelte` file.
 
+## 04. Stores
+
+Writable stores can be created easily...
+
+Subscibe using $ sign.

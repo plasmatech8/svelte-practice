@@ -9,6 +9,7 @@ See:
   - [02. Pages](#02-pages)
   - [03. Routing and Layouts](#03-routing-and-layouts)
   - [04. Stores](#04-stores)
+  - [05. Adding TailwindCSS](#05-adding-tailwindcss)
 
 ## 01. Init Project
 
@@ -50,3 +51,30 @@ A layout can be created using a `__layout.svelte` file.
 Writable stores can be created easily...
 
 Subscibe using $ sign.
+
+## 05. Adding TailwindCSS
+
+See [this setup example](https://jsco.dev/blog/how-to-set-up-tailwindcss-with-svelte-kit)
+or possibly [this svelte-adder for tailwind](https://github.com/svelte-add/tailwindcss).
+
+I think I will use the svelte adder.
+
+```bash
+npx svelte-add@latest tailwindcss
+npm install
+```
+This will create a `postcss.config.cjs` and `tailwind.config.cjs`.
+
+It will modify your `svelte.config.js` and `__layout.svelte`.
+
+It will change the fonts and styling of your app.
+
+You might also want to install the tailwind intellisense VSCode extension.
+
+You might want to turn on quick suggestions so that suggestions are instant when using Svelte.
+```json
+"editor.quickSuggestions": {
+    "strings": true
+}
+```
+

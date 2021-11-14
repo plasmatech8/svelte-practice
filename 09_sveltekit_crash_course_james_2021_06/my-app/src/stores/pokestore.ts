@@ -12,7 +12,7 @@ const fetchPokemon = async (num: number) => {
 	const url = `https://pokeapi.co/api/v2/pokemon?limit=${num}`;
 	const res = await fetch(url);
 	const data = await res.json();
-	const loadedPokemon = data.results.map((data, index) => {
+	const loadedPokemon = data.results.map((data: PokemanType, index: number) => {
 		return {
 			name: data.name,
 			id: index + 1,
@@ -23,4 +23,4 @@ const fetchPokemon = async (num: number) => {
 	});
 	pokemon.set(loadedPokemon);
 };
-fetchPokemon(5);
+fetchPokemon(30);

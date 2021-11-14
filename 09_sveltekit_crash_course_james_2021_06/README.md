@@ -12,6 +12,7 @@ See:
   - [05. Adding TailwindCSS](#05-adding-tailwindcss)
   - [06. Creating a Pokeman Card Component](#06-creating-a-pokeman-card-component)
   - [07. Adding search](#07-adding-search)
+  - [08. Create pokemon page](#08-create-pokemon-page)
 
 ## 01. Init Project
 
@@ -89,3 +90,7 @@ We will use CSS grid (tailwind) to format the cards into a grid.
 ## 07. Adding search
 
 Search will be added into index.svelte.
+
+## 08. Create pokemon page
+
+We will create a server-side rendered page for the pokemon.

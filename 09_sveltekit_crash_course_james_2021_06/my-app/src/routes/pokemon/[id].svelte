@@ -9,7 +9,6 @@
 </script>
 
 <script lang="ts">
-	import type { PokemonDetails } from '../../types/pokemonDetails';
 	export let pokeman: PokemonDetails;
 	const type = pokeman.types[0].type.name;
 </script>

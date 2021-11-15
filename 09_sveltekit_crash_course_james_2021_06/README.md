@@ -13,6 +13,7 @@ See:
   - [06. Creating a Pokeman Card Component](#06-creating-a-pokeman-card-component)
   - [07. Adding search](#07-adding-search)
   - [08. Create pokemon page](#08-create-pokemon-page)
+  - [Notes](#notes)
 
 ## 01. Init Project
 
@@ -94,3 +95,15 @@ Search will be added into index.svelte.
 ## 08. Create pokemon page
 
 We will create a server-side rendered page for the pokemon.
+
+## Notes
+
+Global types:
+* It might be okay to use files like `myInterface.d.ts` to store interfaces or types.
+* (.d.ts means that any type or interface declarations are global - no exports)
+* I am not sure what best practice is, whether to import types or have global access.
+
+Directory structure:
+* It is better to use `src/lib/` to store utility functions and components.
+* Because `$lib` is an inbuilt import shorthand.
+* Files are ideally grouped in folders by either concept (e.g. header, api, utils) or category (e.g. functions, data, components).
